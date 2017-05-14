@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\r;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Tasks;
 
 class TasksController extends Controller
 {
@@ -15,7 +16,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = DB::table('tasks')->get();
+        $tasks = Tasks::get();
 
         return view ('tasks.index', compact('tasks'));
     }
@@ -28,6 +29,7 @@ class TasksController extends Controller
     public function create()
     {
         //
+        return view ('tasks.create');
     }
 
     /**
@@ -39,6 +41,15 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->only('title', 'body');
+        $tasks = new Tasks;
+
+        $tasks->title = $data['title'];
+        $tasks->body = $data['body'];
+
+        $tasks->save();
+
+        return redirect ('/tasks');
     }
 
     /**
@@ -47,9 +58,11 @@ class TasksController extends Controller
      * @param  \App\r  $r
      * @return \Illuminate\Http\Response
      */
-    public function show(r $r)
+    public function show($r)
     {
         //
+        $task = Tasks::find($r);
+        return view ('tasks.show', compact('task'));
     }
 
     /**
@@ -73,6 +86,8 @@ class TasksController extends Controller
     public function update(Request $request, r $r)
     {
         //
+        $task = Tasks::find($r);
+        dd($task);
     }
 
     /**

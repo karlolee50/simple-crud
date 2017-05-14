@@ -15,4 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('tasks', 'TasksController');
+Route::resource('tasks', 'TasksController', [
+	'except' => ['update']
+	]);
+
+Route::post('tasks/{r}', 'TasksController@update');
